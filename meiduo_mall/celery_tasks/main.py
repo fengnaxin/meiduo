@@ -1,3 +1,6 @@
+# 此文件作为celery启动入口
+# 在入口文件主要做三件事：1：创建celery客户端(),2:加载配置celery配置，()
+
 from celery import Celery
 import os
 
