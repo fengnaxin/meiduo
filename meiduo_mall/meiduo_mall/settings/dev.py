@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
+import datetime
 import os, sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,7 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1:8080',
                  'localhost:8080',
                  'www.meiduo.site',
-                 'api.meiduo.site']
+                 'api.meiduo.site',
+                 'localhost']
 
 # Application definition
 
@@ -219,6 +220,24 @@ CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:8080',
     'localhost:8080',
     'www.meiduo.site:8080',
-    'api.meiduo.site:8000'
+    'api.meiduo.site:8000',
+    'localhost:8000'
 )
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication', # 放在首位，表示默认用JWT验证
+        'rest_framework.authentication.SessionAuthentication', # session认证机制
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+# 修改系统验证后端
+AUTHENTICATION_BACKENDS = [
+    'users.utils.UsernameMobileAuthBackend',
+]
+JWT_AUTH = {
+    # Token的过期时间
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.utils.jwt_response_payload_handler',
+}

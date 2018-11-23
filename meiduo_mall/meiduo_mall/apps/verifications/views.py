@@ -3,7 +3,7 @@ import logging
 from django.shortcuts import render
 import random
 from rest_framework import status
-# from rest_framework.views import APIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from django_redis import get_redis_connection
 
@@ -14,9 +14,35 @@ from celery_tasks.main import app
 from rest_framework.generics import GenericAPIView
 from celery_tasks.sms import tasks as sms_tasks
 
-
 # Create your views here.
+from users.models import User
+
 logger = logging.getLogger("django")
+
+
+class UserMobileCountView(GenericAPIView):
+    """判断用户是否存在"""
+
+    def get(self, request, mobile):
+        count = User.objects.filter(mobile=mobile).count()
+        data = {
+            "username": mobile,
+            "count": count
+        }
+        return Response(data)
+
+
+class UsernameCountView(GenericAPIView):
+    """判断用户是否存在"""
+
+    def get(self, request, username):
+        count = User.objects.filter(username=username).count()
+        data = {
+            "username": username,
+            "count": count
+        }
+        return Response(data)
+
 
 class SMSCodeView(GenericAPIView):
     # 发送短信验证码
@@ -50,7 +76,6 @@ class SMSCodeView(GenericAPIView):
         # sms_code_expires = str(constants.SMS_CODE_REDIS_EXPIRES // 60)
 
         sms_tasks.send_sms_code.delay(mobile, sms_code)
-
 
         return Response({"message": "OK"})
 
