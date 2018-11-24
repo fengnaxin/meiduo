@@ -10,6 +10,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(label='确认密码', write_only=True)
     sms_code = serializers.CharField(label='短信验证码', write_only=True)
     allow = serializers.CharField(label='同意协议', write_only=True)
+
     class Meta:
         model = User
         fields = ['id', 'username', 'password', 'password2', 'sms_code', 'mobile', 'allow']
@@ -77,11 +78,17 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.save()
 
         # 服务器生成jwt
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER # 加载生成载荷
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER # 加载生成Token的函数
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER  # 加载生成载荷
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER  # 加载生成Token的函数
 
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
+        user.token = token
 
         return user
 
+
+class UserDetailSerializer(serializers.Serializer):
+    class Meta:
+        model = User
+        fields = ["id",]

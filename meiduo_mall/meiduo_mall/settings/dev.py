@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 import datetime
 import os, sys
+from QQLoginTool.QQtool import OAuthQQ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,10 +27,9 @@ SECRET_KEY = 'ynkjg*@bj&l#&bvt2n#iy!kfm2uxv-xh#3f8=*%pl2%^sn)qo4'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1:8080',
-                 'localhost:8080',
                  'www.meiduo.site',
                  'api.meiduo.site',
-                 'localhost']
+                 '127.0.0.1']
 
 # Application definition
 
@@ -43,8 +43,9 @@ INSTALLED_APPS = [
 
     'rest_framework',  # 注册DRF
     'corsheaders',  # 跨越请求注册
+    'oauth.apps.OauthConfig',
+    'users.apps.UsersConfig',
 
-    'users.apps.UsersConfig'
 
 ]
 
@@ -227,8 +228,8 @@ CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication', # 放在首位，表示默认用JWT验证
-        'rest_framework.authentication.SessionAuthentication', # session认证机制
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 放在首位，表示默认用JWT验证
+        'rest_framework.authentication.SessionAuthentication',  # session认证机制
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
@@ -241,3 +242,7 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.utils.jwt_response_payload_handler',
 }
+# QQ登录参数
+QQ_CLIENT_ID = '101474184'
+QQ_CLIENT_SECRET = 'c6ce949e04e12ecc909ae6a8b09b637c'
+QQ_REDIRECT_URI = 'http://www.meiduo.site:8080/oauth_callback.html'

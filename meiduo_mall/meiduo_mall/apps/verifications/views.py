@@ -1,15 +1,16 @@
 import logging
 
-from django.shortcuts import render
+
 import random
 from rest_framework import status
-from rest_framework.views import APIView
+
 from rest_framework.response import Response
 from django_redis import get_redis_connection
 
 from meiduo_mall.utils.exceptions import logger
 # from meiduo_mall.libs.yuntongxun.sms import CCP
-from meiduo_mall.utils import constants
+# from meiduo_mall.utils import constants
+from . import constants
 from celery_tasks.main import app
 from rest_framework.generics import GenericAPIView
 from celery_tasks.sms import tasks as sms_tasks
