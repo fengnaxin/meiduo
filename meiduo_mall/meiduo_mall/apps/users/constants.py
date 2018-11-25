@@ -1,0 +1,2 @@
+# 发送邮箱激活时令牌的过期时间
+ERIFY_EMAIL_TOKEN_EXPIRES = 600

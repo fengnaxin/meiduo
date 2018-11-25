@@ -26,7 +26,7 @@ var vm = new Vue({
         // 检查用户名
         check_username: function () {
             var len = this.username.length;
-            var re = /^\w{5,20}$/
+            var reUsername = /^[a-zA-Z][a-zA-Z0-9_]{4,19}$/
 
 
 //             if(len<5||len>20) {
@@ -35,11 +35,11 @@ var vm = new Vue({
 //             } else {
 //                 this.error_name = false;
 //             }
-            if (re.test(this.username)) {
+            if (reUsername.test(this.username)) {
                 this.error_name = false;
 
             } else {
-                this.error_name_message = '请输入5-20个字符的用户名';
+                this.error_name_message = '请输入5-20个字符的用户名,且不能以数字开头';
                 this.error_name = true;
 
                 return
@@ -65,11 +65,16 @@ var vm = new Vue({
             }
         },
         check_pwd: function () {
+            var rePass = /^[\w!@#$%^&*]{8,20}$/
             var len = this.password.length;
-            if (len < 8 || len > 20) {
-                this.error_password = true;
-            } else {
+            // if (len < 8 || len > 20)
+
+            if (rePass.test(this.password)) {
+
                 this.error_password = false;
+            } else {
+                this.error_password = true;
+
             }
         },
         check_cpwd: function () {

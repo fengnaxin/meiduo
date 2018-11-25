@@ -48,6 +48,7 @@ class UsernameCountView(GenericAPIView):
 class SMSCodeView(GenericAPIView):
     # 发送短信验证码
     def get(self, request, mobile):
+
         redis_con = get_redis_connection("verify_codes")
 
         # 60秒内不允许重发发送短信

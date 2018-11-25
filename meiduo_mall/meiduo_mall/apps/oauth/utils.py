@@ -22,7 +22,7 @@ def check_save_user_token(access_token):
     :param token: token
     :return: openid or None
     """
-    serializer = Serializer(settings.SECRET_KEY, expires_in=constants.SAVE_QQ_USER_TOKEN_EXPIRES)
+    serializer = Serializer(settings.SECRET_KEY, constants.SAVE_QQ_USER_TOKEN_EXPIRES)
     try:
         data = serializer.loads(access_token)
     except BadData:
