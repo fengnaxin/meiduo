@@ -11,7 +11,7 @@ from meiduo_mall.utils.exceptions import logger
 # from meiduo_mall.libs.yuntongxun.sms import CCP
 # from meiduo_mall.utils import constants
 from . import constants
-from celery_tasks.main import app
+# from celery_tasks.main import app
 from rest_framework.generics import GenericAPIView
 from celery_tasks.sms import tasks as sms_tasks
 

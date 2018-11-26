@@ -12,7 +12,7 @@ from meiduo_mall.settings import dev
 from meiduo_mall.utils.exceptions import logger
 from oauth.models import OAuthQQUser
 from oauth.utils import generate_save_user_token
-from .serializer import QQAuthUserSerializer
+from .serializers import QQAuthUserSerializer
 
 
 # Create your views here.
