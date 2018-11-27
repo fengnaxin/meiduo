@@ -87,6 +87,7 @@ class AddressViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericVi
         return Response(serializer.data)
 
 
+
 class VerifyEmailView(APIView):
     """
     邮箱验证

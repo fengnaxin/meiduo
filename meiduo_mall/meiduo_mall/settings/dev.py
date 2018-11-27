@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'corsheaders',  # 跨越请求注册
     'oauth.apps.OauthConfig',
     'users.apps.UsersConfig',
-    'areas.apps.AreasConfig'
+    'areas.apps.AreasConfig',
+    'contents.apps.ContentsConfig',
+    'goods.apps.GoodsConfig',
 
 
 ]
