@@ -37,7 +37,7 @@ class AddressViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericVi
             'addresses': serializer.data,
         })
 
-    # POST /addresses/
+   # POST /addresses/
     def create(self, request, *args, **kwargs):
         """
         保存用户地址数据

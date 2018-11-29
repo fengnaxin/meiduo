@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
+# from fdfs_client.client import Fdfs_client
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "meiduo_mall.settings.dev")
