@@ -275,7 +275,7 @@ REST_FRAMEWORK_EXTENSIONS = {
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 # FastDFS
 # fastdfs_ngix的域名与地址
-FDFS_BASE_URL = 'http://192.168.14.233:8888/'
+FDFS_BASE_URL = 'http://192.168.14.127:8888/'
 # 自定义文件存储配置位置
 FDFS_CLIENT_CONF = os.path.join(BASE_DIR, 'utils/fastdfs/client.conf')
 # 富文本配置

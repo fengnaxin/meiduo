@@ -1,7 +1,9 @@
+import logging
+
 from django.core.files.storage import Storage
 from fdfs_client.client import Fdfs_client
 from django.conf import settings
-
+logger = logging.getLogger("django")
 
 class FastDFSStorage(Storage):
     """自定义Django文件储存系统"""
@@ -20,7 +22,7 @@ class FastDFSStorage(Storage):
         """
         pass
 
-    def _save(self, name, content):
+    def _save(self, name, content=None):
         """
         实现文件存储: 在这个方法里面将文件转存到FastDFS服务器
         :param name:要储存文件的文件名字
@@ -28,21 +30,19 @@ class FastDFSStorage(Storage):
         :return: file_id
         """
         client = Fdfs_client(self.client_conf)
-        ret = client.upload_by_filename('/Users/naxin_fung/Desktop/1.png')
-        """{'Group name': 'group1',
-            'Remote file_id': 'group1/M00/00/00/wKgO6VwABMaAEEMDAAAj9N_m3yU194.png',
-            'Status': 'Upload successed.',
-            'Local file name': '/Users/naxin_fung/Desktop/1.png',
-             'Uploaded size': '8.00KB',
-            'Storage IP': '192.168.14.233'}
-            """
+        print(content)
+        # ret = client.upload_by_filename('/Users/naxin_fung/Desktop/1.png')
+        # ret = client.append_by_buffer(content.read())
+        ret = client.upload_appender_by_buffer(content.read())
 
         status = ret.get("Status")
         # 判断是否储存文件成功
         if status != "Upload successed.":
             raise Exception("Upload file failed")
-
+        logger.info("上传成功")
+        # 如果能执行到这里,说明文件上传成功了
         file_id = ret.get("Remote file_id")
+        logger.info("file_id=%s" % file_id)
 
         return file_id
 
