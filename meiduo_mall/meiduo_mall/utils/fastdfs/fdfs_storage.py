@@ -1,13 +1,14 @@
 from django.core.files.storage import Storage
-
 from fdfs_client.client import Fdfs_client
+from django.conf import settings
 
 
 class FastDFSStorage(Storage):
     """自定义Django文件储存系统"""
 
-    def __init__(self, option=None):
-        pass
+    def __init__(self, client_conf=None, base_url=None):
+        self.client_conf = client_conf or settings.FDFS_CLIENT_CONF
+        self.base_url = base_url or settings.FDFS_BASE_URL
 
     def _open(self, name, mode):
         """
@@ -26,7 +27,7 @@ class FastDFSStorage(Storage):
         :param content:要存储的文件对象, File类型的对象,将来使用content.read()读取对象中的文件二进制
         :return: file_id
         """
-        client = Fdfs_client('meiduo_mall/utils/fastdfs/client.conf')
+        client = Fdfs_client(self.client_conf)
         ret = client.upload_by_filename('/Users/naxin_fung/Desktop/1.png')
         """{'Group name': 'group1',
             'Remote file_id': 'group1/M00/00/00/wKgO6VwABMaAEEMDAAAj9N_m3yU194.png',
@@ -55,6 +56,4 @@ class FastDFSStorage(Storage):
         return False
 
     def url(self, name):
-        return '192.168.14.233:8888'+name
-
-
+        return self.base_url + name

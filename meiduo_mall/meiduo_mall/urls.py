@@ -18,8 +18,18 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    # 富文本编辑器路由
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+
+    # 注册验证路由
     url(r'^', include("verifications.urls")),
+    # 注册user应用
     url(r'^', include("users.urls")),
+    # 通过qq登录路由
     url(r'^oauth/', include('oauth.urls')),
+    # 省市区三级联动
     url(r'^', include('areas.urls'))
 ]
+
+
+
