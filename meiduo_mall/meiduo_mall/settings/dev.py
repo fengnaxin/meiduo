@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['127.0.0.1:8080',
 # Application definition
 
 INSTALLED_APPS = [
+    # 系统app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,17 +42,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 第三方app
     'rest_framework',  # 注册DRF
     'corsheaders',  # 跨越请求注册
     'ckeditor',  # 富文本编辑器
     'ckeditor_uploader',  # 富文本编辑器上传图片模块
+    'django_crontab',  # 定时任务
 
+    # 自建app
     'oauth.apps.OauthConfig',
     'users.apps.UsersConfig',
     'areas.apps.AreasConfig',
     'contents.apps.ContentsConfig',
     'goods.apps.GoodsConfig',
-
 
 ]
 
@@ -77,7 +80,7 @@ ROOT_URLCONF = 'meiduo_mall.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -258,11 +261,11 @@ QQ_REDIRECT_URI = 'http://www.meiduo.site:8080/oauth_callback.html'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_PORT = 25
-#发送邮件的邮箱
+# 发送邮件的邮箱
 EMAIL_HOST_USER = 'holicsci@163.com'
-#在邮箱中设置的客户端授权密码
+# 在邮箱中设置的客户端授权密码
 EMAIL_HOST_PASSWORD = '123456789Aa'
-#收件人看到的发件人
+# 收件人看到的发件人
 EMAIL_FROM = 'python<holicsci@163.com>'
 # DRF扩展
 REST_FRAMEWORK_EXTENSIONS = {
@@ -275,7 +278,7 @@ REST_FRAMEWORK_EXTENSIONS = {
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 # FastDFS
 # fastdfs_ngix的域名与地址
-FDFS_BASE_URL = 'http://192.168.14.127:8888/'
+FDFS_BASE_URL = 'http://192.168.14.233:8888/'
 # 自定义文件存储配置位置
 FDFS_CLIENT_CONF = os.path.join(BASE_DIR, 'utils/fastdfs/client.conf')
 # 富文本配置
@@ -287,3 +290,14 @@ CKEDITOR_CONFIGS = {
     },
 }
 CKEDITOR_UPLOAD_PATH = ''  # 上传图片保存路径，使用了FastDFS，所以此处设为''
+
+# 生成的静态html文件保存目录
+GENERATED_STATIC_HTML_FILES_DIR = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'front_end_pc')
+
+CRONJOBS = [
+    # 每5分钟执行一次生成主页静态文件
+    ('*/1 * * * *', 'contents.crons.enerate_static_index_html', '>> /Users/naxin_fung/Desktop/meiduo/meiduo_mall/logs/crontab.log')
+]
+# 定时器任务
+
+CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'

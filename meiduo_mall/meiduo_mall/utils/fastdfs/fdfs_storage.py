@@ -3,7 +3,9 @@ import logging
 from django.core.files.storage import Storage
 from fdfs_client.client import Fdfs_client
 from django.conf import settings
+
 logger = logging.getLogger("django")
+
 
 class FastDFSStorage(Storage):
     """自定义Django文件储存系统"""
@@ -30,7 +32,8 @@ class FastDFSStorage(Storage):
         :return: file_id
         """
         client = Fdfs_client(self.client_conf)
-        print(content)
+        # print(content)
+        # print("name=%s"%name)
         # ret = client.upload_by_filename('/Users/naxin_fung/Desktop/1.png')
         # ret = client.append_by_buffer(content.read())
         ret = client.upload_appender_by_buffer(content.read())
@@ -39,10 +42,10 @@ class FastDFSStorage(Storage):
         # 判断是否储存文件成功
         if status != "Upload successed.":
             raise Exception("Upload file failed")
-        logger.info("上传成功")
+        # logger.info("上传成功")
         # 如果能执行到这里,说明文件上传成功了
         file_id = ret.get("Remote file_id")
-        logger.info("file_id=%s" % file_id)
+        # logger.info("file_id=%s" % file_id)
 
         return file_id
 
