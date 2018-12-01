@@ -49,12 +49,14 @@ INSTALLED_APPS = [
     'ckeditor_uploader',  # 富文本编辑器上传图片模块
     'django_crontab',  # 定时任务
 
+
     # 自建app
     'oauth.apps.OauthConfig',
     'users.apps.UsersConfig',
     'areas.apps.AreasConfig',
     'contents.apps.ContentsConfig',
     'goods.apps.GoodsConfig',
+
 
 ]
 
@@ -296,7 +298,7 @@ GENERATED_STATIC_HTML_FILES_DIR = os.path.join(os.path.dirname(os.path.dirname(B
 
 CRONJOBS = [
     # 每5分钟执行一次生成主页静态文件
-    ('*/1 * * * *', 'contents.crons.enerate_static_index_html', '>> /Users/naxin_fung/Desktop/meiduo/meiduo_mall/logs/crontab.log')
+    ('*/1 * * * *', 'contents.crons.generate_static_index_html', '>> /Users/naxin_fung/Desktop/meiduo/meiduo_mall/logs/crontab.log')
 ]
 # 定时器任务
 
