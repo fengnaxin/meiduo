@@ -1,9 +1,9 @@
-from celery_tasks.main import app
+from celery_tasks.main import celery_app
 from django.core.mail import send_mail
 from django.conf import settings
 
 
-@app.task(name='send_verify_email')
+@celery_app.task(name='send_verify_email')
 def send_verify_email(to_email, verify_url):
     """
     发送验证邮箱邮件

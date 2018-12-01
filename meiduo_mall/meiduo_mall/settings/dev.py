@@ -245,6 +245,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',  # session认证机制
         'rest_framework.authentication.BasicAuthentication',
     ),
+    # 分页
+    'DEFAULT_PAGINATION_CLASS': 'meiduo_mall.utils.pagination.StandardResultsSetPagination',
 }
 # 修改系统验证后端
 AUTHENTICATION_BACKENDS = [

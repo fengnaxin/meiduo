@@ -28,7 +28,9 @@ urlpatterns = [
     # 通过qq登录路由
     url(r'^oauth/', include('oauth.urls')),
     # 省市区三级联动
-    url(r'^', include('areas.urls'))
+    url(r'^', include('areas.urls')),
+    url(r'^', include('goods.urls')),
+
 ]
 
 

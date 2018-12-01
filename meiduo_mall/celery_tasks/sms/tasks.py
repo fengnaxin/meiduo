@@ -1,6 +1,6 @@
 # 定义耗时任务
 import logging
-from celery_tasks.main import app
+from celery_tasks.main import celery_app
 from .yuntongxun.sms import CCP
 from .constants import SMS_CODE_REDIS_EXPIRES
 
@@ -9,7 +9,7 @@ logger = logging.getLogger("django")
 SMS_CODE_TEMP_ID = 1
 
 
-@app.task(name='send_sms_code')
+@celery_app.task(name='send_sms_code')
 def send_sms_code(mobile, sms_code):
     """
     发送短信验证码
