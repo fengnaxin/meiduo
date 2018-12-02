@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import ListAPIView
 from .models import SKU
-from .serializers import SKUSerializer
+from .serializers import SKUSerializer, SKUIndexSerializer
 
 
 # Create your views here.
@@ -25,4 +25,12 @@ class SKUListAPIView(ListAPIView):
     # 指定序列化器
     serializer_class = SKUSerializer
 
+from drf_haystack.viewsets import HaystackViewSet
 
+class SKUSearchViewSet(HaystackViewSet):
+    """
+    SKU搜索
+    """
+    index_models = [SKU]
+
+    serializer_class = SKUIndexSerializer
