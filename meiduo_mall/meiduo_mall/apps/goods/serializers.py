@@ -29,3 +29,4 @@ class SKUIndexSerializer(HaystackSerializer):
     class Meta:
         index_classes = [SKUIndex]
         fields = ('text', 'object')
+

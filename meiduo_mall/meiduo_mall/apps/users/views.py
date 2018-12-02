@@ -6,10 +6,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
+from django_redis import get_redis_connection
 
-from users import serializers, constants
-from users.models import User
-from users.serializers import EmailSerializer, UserDetailSerializer, CreateUserSerializer
+from goods.models import SKU
+from . import serializers, constants
+from .models import User
+from .serializers import EmailSerializer, UserDetailSerializer, CreateUserSerializer
+from .serializers import AddUserBrowsingHistorySerializer
+from goods.serializers import SKUSerializer
 
 
 class AddressViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericViewSet):
@@ -37,7 +41,7 @@ class AddressViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericVi
             'addresses': serializer.data,
         })
 
-   # POST /addresses/
+    # POST /addresses/
     def create(self, request, *args, **kwargs):
         """
         保存用户地址数据
@@ -87,7 +91,7 @@ class AddressViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericVi
         return Response(serializer.data)
 
 
-
+# get emails/verification/
 class VerifyEmailView(APIView):
     """
     邮箱验证
@@ -136,3 +140,37 @@ class UsernameCountView(CreateAPIView):
     """CreateAPIView视图"""
 
     serializer_class = CreateUserSerializer
+
+
+# POST /browse_histories/
+class UserBrowseHistoryView(CreateAPIView):
+    """保存用户浏览记录的视图"""
+    # 指定序列化器
+    serializer_class = AddUserBrowsingHistorySerializer
+    # 登录用户才能访问此接口
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """获取用户的浏览记录"""
+
+        # 获取用户id
+        user_id = request.user.id
+
+        # 创建redis连接
+        redis_conn = get_redis_connection('history')
+
+        # 取出当前用户redis浏览数据
+        sku_ids = redis_conn.lrange('history_%s' % user_id, 0, -1)
+        sku_list = []
+        # 遍历sku_ids列表
+        for sku_id in sku_ids:
+            sku_model = SKU.objects.get(id=sku_id)
+            sku_list.append(sku_model)
+        serializer = SKUSerializer(sku_list,many=True)
+
+        return Response(serializer.data)
+
+
+
+
+

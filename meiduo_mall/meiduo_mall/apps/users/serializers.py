@@ -2,6 +2,8 @@ import re
 from rest_framework_jwt.settings import api_settings
 from django_redis import get_redis_connection
 from rest_framework import serializers
+
+from goods.models import SKU
 from .models import User, Address
 from celery_tasks.email.tasks import send_verify_email
 
@@ -164,3 +166,38 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.token = token
 
         return user
+
+
+class AddUserBrowsingHistorySerializer(serializers.Serializer):
+    """添加用户浏览历史记录序列化器"""
+    sku_id = serializers.IntegerField(label="商品SKU编码", min_value=1)
+
+    def validate_sku_id(self, value):
+        try:
+            sku = SKU.objects.get(id=value)
+        except sku.DoesNotExits:
+            raise serializers.ValitionError('商品不存在')
+        return value
+
+    def create(self, validated_data):
+        """重写此方法，为了把数据存到redis数据库里面去"""
+        # 移除已经存在的本商品浏览记录
+        user_id = self.context['request'].user.id
+        sku_id = validated_data['sku_id']
+        redis_conn = get_redis_connection('history')
+        pl = redis_conn.pipeline()
+        key = 'history_%s' % user_id
+
+        #  去重
+        pl.lrem(key, 0, sku_id)
+
+        # 添加
+        pl.lpush(key,sku_id)
+
+        # 截取
+        pl.ltrim(key, 0, 4)
+
+        # 执行
+        pl.execute()
+
+        return validated_data
