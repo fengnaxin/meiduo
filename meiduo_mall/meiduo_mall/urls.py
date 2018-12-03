@@ -23,13 +23,20 @@ urlpatterns = [
 
     # 注册验证路由
     url(r'^', include("verifications.urls")),
+
     # 注册user应用
     url(r'^', include("users.urls")),
+
     # 通过qq登录路由
     url(r'^oauth/', include('oauth.urls')),
     # 省市区三级联动
     url(r'^', include('areas.urls')),
+
+    # 商品
     url(r'^', include('goods.urls')),
+
+    # 购物车
+    url(r'^', include('carts.urls')),
 
 ]
 

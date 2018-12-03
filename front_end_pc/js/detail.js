@@ -46,7 +46,7 @@ var vm = new Vue({
                 }
             })
         }
-        // this.get_cart();
+        this.get_cart();
         // this.get_hot_goods();
         // this.get_comments();
     },
@@ -80,7 +80,7 @@ var vm = new Vue({
         },
         // 添加购物车
         add_cart: function () {
-            axios.post(this.host + '/cart/', {
+            axios.post(this.host + '/carts/', {
                 sku_id: parseInt(this.sku_id),
                 count: this.sku_count
             }, {

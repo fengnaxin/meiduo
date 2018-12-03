@@ -5,8 +5,9 @@ from rest_framework.generics import CreateAPIView, UpdateAPIView, RetrieveAPIVie
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import GenericViewSet
+# from rest_framework.viewsets import GenericViewSet
 from django_redis import get_redis_connection
+from rest_framework.viewsets import GenericViewSet
 
 from goods.models import SKU
 from . import serializers, constants
@@ -168,7 +169,7 @@ class UserBrowseHistoryView(CreateAPIView):
             sku_list.append(sku_model)
         serializer = SKUSerializer(sku_list,many=True)
 
-        return Response(serializer.data)
+        Response(serializer.data)
 
 
 

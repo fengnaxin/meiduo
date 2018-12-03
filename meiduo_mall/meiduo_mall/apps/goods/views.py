@@ -34,3 +34,5 @@ class SKUSearchViewSet(HaystackViewSet):
     index_models = [SKU]
 
     serializer_class = SKUIndexSerializer
+
+

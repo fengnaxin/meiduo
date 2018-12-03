@@ -50,14 +50,12 @@ INSTALLED_APPS = [
     'django_crontab',  # 定时任务
     # 'haystack', # 全文搜索引擎
 
-
     # 自建app
     'oauth.apps.OauthConfig',
     'users.apps.UsersConfig',
     'areas.apps.AreasConfig',
     'contents.apps.ContentsConfig',
     'goods.apps.GoodsConfig',
-
 
 ]
 
@@ -181,7 +179,13 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-
+    "carts ": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/4",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
 
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -309,7 +313,8 @@ GENERATED_STATIC_HTML_FILES_DIR = os.path.join(os.path.dirname(os.path.dirname(B
 
 CRONJOBS = [
     # 每5分钟执行一次生成主页静态文件
-    ('*/1 * * * *', 'contents.crons.generate_static_index_html', '>> /Users/naxin_fung/Desktop/meiduo/meiduo_mall/logs/crontab.log')
+    ('*/1 * * * *', 'contents.crons.generate_static_index_html',
+     '>> /Users/naxin_fung/Desktop/meiduo/meiduo_mall/logs/crontab.log')
 ]
 # 定时器任务
 
